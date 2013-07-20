@@ -7,18 +7,17 @@ Assembly
 - ATT&T
 - MIPS
 
-
-### Compiling on Mac OSX
+### Compiling x86 on Mac OSX and FreeBSD
 
 #### Steps:
 
 - nasm -o hello.tmp -f macho hello.s
-- ld -arch i386 -macosx_version_min 10.6 -no_pie -e main -o hello.o hello.tmp
+- ld -arch i386 -macosx_version_min 10.6 -no_pie -e _main -o hello.o hello.tmp
 - ./hello.o
 
 #### One-Liner:
 
-- nasm -o hello.tmp -f macho hello.s && ld -arch i386 -macosx_version_min 10.6 -no_pie -e main -o hello.o hello.tmp && ./hello.o
+- nasm -o hello.tmp -f macho hello.s && ld -arch i386 -macosx_version_min 10.6 -no_pie -e _main -o hello.o hello.tmp && ./hello.o
 
 ### Important: 
 ##### Note: I use .tmp in order to go from (.s) - assembly -> (.tmp) - temporary -> (.o) - binary
@@ -34,7 +33,7 @@ Assembly
 - -arch i386 - specify architecture (32 bit assembly)
 - -macosx_version_min 10.6 (Mac OSX - complains about default specification)
 - -no_pie (Mac OSX - removes ld warning)
-- -e main - specify symbol name
+- -e main - specify main symbol name (Mac OSX - default is start)
 - -o hello.o - outfile
 
 #### For Shell:
@@ -50,3 +49,11 @@ Assembly
 
 "ld: warning: -macosx_version_min not specified, assuming 10.6"
 - Add the "-macosx_version_min 10.6" option to "ld" when linking
+
+#### Other
+
+"ld: warning: option -m is obsolete and being ignored"
+- Older option
+
+"ld: warning: option -s is obsolete and being ignored"
+- Older option
