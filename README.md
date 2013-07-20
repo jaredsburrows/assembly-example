@@ -10,38 +10,40 @@ Assembly
 
 ### Compiling on Mac OSX
 
-Steps:
+#### Steps:
 
-- nasm -f macho hello.asm
-- ld -arch i386 -macosx_version_min 10.7 -e _start -o hello hello.o
-- ./hello
+- nasm -o hello.tmp -f macho hello.s
+- ld -arch i386 -macosx_version_min 10.6 -no_pie -e main -o hello.o hello.tmp
+- ./hello.o
 
-One-Liner:
+#### One-Liner:
 
-- nasm -f macho hello.s && ld -arch i386 -macosx_version_min 10.6 -no_pie -e main -o hello hello.o && ./hello
-
+- nasm -o hello.tmp -f macho hello.s && ld -arch i386 -macosx_version_min 10.6 -no_pie -e main -o hello.o hello.tmp && ./hello.o
 
 ### Important: 
+##### Note: I use .tmp in order to go from (.s) - assembly -> (.tmp) - temporary -> (.o) - binary
+##### Note: I also use "&&" in order to stop execution if anything goes wrong
 
-For nasm:
-- -f - specify format
+#### For nasm:
+- -o hello.tmp - outfile
+- -f macho - specify format
 	- Linux - elf or elf64 
 	- Mac OSX - macho
 
-For ld:
-- -arch i386 (32 bit assembly)
+#### For ld:
+- -arch i386 - specify architecture (32 bit assembly)
 - -macosx_version_min 10.6 (Mac OSX - complains about default specification)
 - -no_pie (Mac OSX - removes ld warning)
 - -e main - specify symbol name
-- -o outfile
+- -o hello.o - outfile
 
-For Shell:
-- ./hello - execution
+#### For Shell:
+- ./hello.o - execution
 
 
-Compilation Issues:
+### Compilation Issues:
 
-### Mac OSX
+#### Mac OSX
 
 "ld: warning: PIE disabled. Absolute addressing (perhaps -mdynamic-no-pic) not allowed in code signed PIE, but used in _start from hello.o. To fix this warning, don't compile with -mdynamic-no-pic or link with -Wl,-no_pie"
 - Add the "-no_pie" option to "ld" when linking
